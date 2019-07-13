@@ -1,2 +1,2 @@
 # ManageMyPackages
-PowerShell cmdlet to manage my packages.
+PowerShell functions to manage my packages.
