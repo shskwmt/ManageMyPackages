@@ -17,7 +17,10 @@ Function Install-PackageProviders {
       'Chocolatey'
     )
   )
-  $ProviderList | Get-Unique | ForEach-Object {Install-PackageProvider -Force $_}
+  $ProviderList | Get-Unique | ForEach-Object {
+    Write-Host "Install $_ ..."
+    Install-PackageProvider -Force $_
+  }
 }
 
 Function Install-MyPackages {
@@ -32,7 +35,9 @@ Function Install-MyPackages {
   [System.Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls11
   $gistUri = "https://api.github.com/gists/" + $PackageListGistId
   $packageList = (Invoke-WebRequest -Uri $gistUri | ConvertFrom-Json).files.$fileName.content -split "\n"
-  $packageList | ForEach-Object {Install-Package -Force -Provider ChocolateyGet $_}
+  $packageList | ForEach-Object {
+    Write-Host "Install $_ ..."
+    Install-Package -Force -Provider ChocolateyGet $_}
 }
 
 Function Out-PackageListFile {
