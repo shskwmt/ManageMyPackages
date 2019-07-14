@@ -11,10 +11,10 @@ Function Install-PackageProviders {
   #>
   Param (
     [Parameter(Position=0)][String[]]$ProviderList = @(
-      'NuGet',
-      'ChocolateyGet',
-      'PowerShellGet',
-      'Chocolatey'
+      "NuGet",
+      "ChocolateyGet",
+      "PowerShellGet",
+      "Chocolatey"
     )
   )
   $ProviderList | Get-Unique | ForEach-Object {
@@ -30,14 +30,17 @@ Function Install-MyPackages {
   #>
   Param(
     [Parameter(Mandatory,Position=0)][String]$PackageListGistId,
-    [Parameter(Position=1)][String]$FileName = $WindowsPackageListFile
+    [Parameter(Position=1)][String]$FileName = $WindowsPackageListFile,
+    [Parameter(Position=2)]
+    [ValidateSet("NuGet","ChocolateyGet","PowerShellGet","Chocolatey")]
+    [String]$ProviderName = "ChocolateyGet"
   )
   [System.Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls11
   $gistUri = "https://api.github.com/gists/" + $PackageListGistId
   $packageList = (Invoke-WebRequest -Uri $gistUri | ConvertFrom-Json).files.$fileName.content -split "\n"
   $packageList | ForEach-Object {
     Write-Host "Install $_ ..."
-    Install-Package -Force -Provider ChocolateyGet $_}
+    Install-Package -Force -Provider $ProviderName $_}
 }
 
 Function Out-PackageListFile {
