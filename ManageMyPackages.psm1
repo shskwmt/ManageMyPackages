@@ -44,14 +44,14 @@ Function Install-MyPackages {
         Install-Package -Force -Provider $ProviderName $_}
     }
 
-    Function Out-PackageListFile {
-        <#
-        .SYNOPSIS
-        Output package list file that you have already installed.
-        #>
-        Param(
-            [Parameter(Position=0)][String]$PackageListPath = $WindowsPackageListFile,
-            [Parameter(Position=1)][String]$Provider = "ChocolateyGet"
-        )
-        Get-Package -Provider $Provider | ForEach-Object {$_.Name} | Out-File $PackageListPath
-    }
+Function Out-PackageListFile {
+    <#
+    .SYNOPSIS
+    Output package list file that you have already installed.
+    #>
+    Param(
+        [Parameter(Position=0)][String]$PackageListPath = $WindowsPackageListFile,
+        [Parameter(Position=1)][String]$Provider = "ChocolateyGet"
+    )
+    Get-Package -Provider $Provider | ForEach-Object {$_.Name} | Out-File $PackageListPath
+}
